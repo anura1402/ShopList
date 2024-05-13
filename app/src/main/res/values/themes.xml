@@ -2,4 +2,8 @@
 <resources>
 
     <style name="Theme.ShopList" parent="android:Theme.Material.Light.NoActionBar" />
+    <style name="AppTheme" parent="Theme.AppCompat.Light">
+        <!-- Дополнительные настройки темы -->
+    </style>
+
 </resources>
