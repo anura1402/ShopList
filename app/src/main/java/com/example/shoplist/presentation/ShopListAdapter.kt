@@ -26,7 +26,7 @@ class ShopListAdapter : RecyclerView.Adapter<ShopListAdapter.ShopItemViewHolder>
         }
     }
 
-    //count
+    //count 1
     override fun getItemCount(): Int {
         return list.size
     }
