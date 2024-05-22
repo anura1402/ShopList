@@ -17,7 +17,7 @@ class ShopListAdapter : RecyclerView.Adapter<ShopListAdapter.ShopItemViewHolder>
             field = value
             notifyDataSetChanged()
         }
-    var onShopItemLongClickListener: OnShopItemLongClickListener? = null
+    var onShopItemLongClickListener: ((ShopItem) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ShopItemViewHolder {
         Log.d("ShopListAdapter", "onCreateViewHolder, count: ${++count}")
@@ -51,7 +51,8 @@ class ShopListAdapter : RecyclerView.Adapter<ShopListAdapter.ShopItemViewHolder>
         holder.tvName.text = shopItem.name
         holder.tvCount.text = shopItem.count.toString()
         holder.view.setOnLongClickListener {
-            onShopItemLongClickListener?.onShopItemLongClick(shopItem)
+            //если не null, то вызовется функция
+            onShopItemLongClickListener?.invoke(shopItem)
             true
         }
     }
