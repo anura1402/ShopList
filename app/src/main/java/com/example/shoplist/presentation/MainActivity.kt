@@ -22,9 +22,9 @@ class MainActivity : AppCompatActivity() {
         viewModel.shopList.observe(this) {
             // Обновление данных адаптера, когда изменяется список покупок
             shopListAdapter.shopList = it
+
         }
         setupRecyclerView()
-
     }
 
     private fun setupRecyclerView() {
