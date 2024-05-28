@@ -4,10 +4,9 @@ import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.example.shoplist.R
-import androidx.recyclerview.widget.ItemTouchHelper
-import com.example.shoplist.domain.ShopItem
 
 
 class MainActivity : AppCompatActivity() {
@@ -21,7 +20,11 @@ class MainActivity : AppCompatActivity() {
         viewModel = ViewModelProvider(this)[MainViewModel::class.java]
         viewModel.shopList.observe(this) {
             // Обновление данных адаптера, когда изменяется список покупок
-            shopListAdapter.shopList = it
+
+            //shopListAdapter.shopList = it при использовании ShopListDiffCallback
+
+            //запуск нового потока для вычислений изменений
+            shopListAdapter.submitList(it)
 
         }
         setupRecyclerView()
@@ -62,7 +65,8 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                val item = shopListAdapter.shopList[viewHolder.adapterPosition]
+                //val item = shopListAdapter.shopList[viewHolder.adapterPosition] при использовании ShopListDiffCallback
+                val item = shopListAdapter.currentList[viewHolder.adapterPosition]
                 viewModel.deleteShopItem(item)
             }
         }
