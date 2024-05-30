@@ -24,7 +24,9 @@ class ShopItemActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_shop_item)
         parseIntent()
-        launchRightMode()
+        if (savedInstanceState == null) { //чтобы не вызывался onCreate дважды при перевороте экрана
+            launchRightMode()
+        }
 
     }
     private fun launchRightMode() {
@@ -35,7 +37,7 @@ class ShopItemActivity : AppCompatActivity() {
         }
         //добавление фрагмента в контейнер активити
         supportFragmentManager.beginTransaction()
-            .add(R.id.shop_item_container, fragment)
+            .replace(R.id.shop_item_container, fragment)
             .commit()
     }
     private fun parseIntent() {

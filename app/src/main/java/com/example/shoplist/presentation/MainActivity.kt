@@ -51,7 +51,7 @@ class MainActivity : AppCompatActivity() {
     private fun launchFragment(fragment: Fragment) {
         supportFragmentManager.popBackStack() //удаление верхнего объекта из backstack(стек из поочередно запущенных активити)
         supportFragmentManager.beginTransaction()
-            .add(R.id.shop_item_container, fragment)
+            .replace(R.id.shop_item_container, fragment)
             .addToBackStack(null)
             .commit()
     }
