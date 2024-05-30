@@ -17,7 +17,7 @@ import com.example.shoplist.domain.ShopItem
 import com.google.android.material.textfield.TextInputLayout
 
 
-class ShopItemActivity : AppCompatActivity() {
+class ShopItemActivity : AppCompatActivity(), ShopItemFragment.OnEditingFinishedListener{
     private var screenMode = UNKNOWN_MODE
     private var shopItemId = ShopItem.UNDEFINED_ID
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -75,4 +75,11 @@ class ShopItemActivity : AppCompatActivity() {
             return intent
         }
     }
+
+    override fun onEditingFinished() {
+        Toast.makeText(this,"Success",Toast.LENGTH_SHORT).show()
+        finish()
+    }
+
+
 }

@@ -1,7 +1,6 @@
 package com.example.shoplist.presentation
 
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -19,6 +18,7 @@ import com.google.android.material.textfield.TextInputLayout
 class ShopItemFragment: Fragment() {
 
     private lateinit var viewModel: ShopItemViewModel
+    private lateinit var onEditingFinishedListener: OnEditingFinishedListener
 
     private lateinit var tilName: TextInputLayout
     private lateinit var tilCount: TextInputLayout
@@ -28,6 +28,13 @@ class ShopItemFragment: Fragment() {
 
     private var screenMode: String = UNKNOWN_MODE
     private var shopItemId: Int = ShopItem.UNDEFINED_ID
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is OnEditingFinishedListener){
+            onEditingFinishedListener = context
+        } else throw RuntimeException("Activity must implement OnEditingFinishedListener")
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,10 +60,13 @@ class ShopItemFragment: Fragment() {
     }
 
 
+    interface OnEditingFinishedListener{
+        fun onEditingFinished()
+    }
+
     private fun observeFinish() {
         viewModel.finishScreen.observe(viewLifecycleOwner) {
-            activity?.onBackPressed()
-            //requireActivity().onBackPressed() не null, если вдруг активити не будет(не прикреплены к ней), то будет краш
+            onEditingFinishedListener.onEditingFinished()
         }
     }
 
