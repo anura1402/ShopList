@@ -1,10 +1,12 @@
 package com.example.shoplist.presentation
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.shoplist.data.ShopListRepositoryImpl
 import com.example.shoplist.domain.AddShopItemUseCase
 import com.example.shoplist.domain.EditShopItemUseCase
@@ -40,10 +42,9 @@ class ShopItemViewModel(application: Application): AndroidViewModel(application)
     val finishScreen: LiveData<Unit>
         get() = _finishScreen
 
-    private val scope = CoroutineScope(Dispatchers.IO)
 
     fun getShopItem(shopItemId: Int) {
-        scope.launch {
+        viewModelScope.launch {
             val item = getShopItemUseCase.getItem(shopItemId)
             _shopItem.value = item
         }
@@ -54,7 +55,7 @@ class ShopItemViewModel(application: Application): AndroidViewModel(application)
         val name = parseName(inputName)
         val count = parseCount(inputCount)
         val fieldsValid = validateInput(name, count)
-        scope.launch {
+        viewModelScope.launch {
             if (fieldsValid) {
                 val shopItem = ShopItem(name, count, true)
                 addShopItemUseCase.addItem(shopItem)
@@ -68,7 +69,7 @@ class ShopItemViewModel(application: Application): AndroidViewModel(application)
         val name = parseName(inputName)
         val count = parseCount(inputCount)
         val fieldsValid = validateInput(name, count)
-        scope.launch {
+        viewModelScope.launch {
             if (fieldsValid) {
                 val newShopItem = _shopItem.value?.let {
                     val item = it.copy(name = name, count = count)
@@ -119,8 +120,4 @@ class ShopItemViewModel(application: Application): AndroidViewModel(application)
         const val UNDEFINED_COUNT = -1
     }
 
-    override fun onCleared() {
-        super.onCleared()
-        scope.cancel()
-    }
 }
