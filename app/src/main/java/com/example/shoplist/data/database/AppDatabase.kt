@@ -1,4 +1,4 @@
-package com.example.shoplist.data
+package com.example.shoplist.data.database
 
 import android.app.Application
 import androidx.room.Database

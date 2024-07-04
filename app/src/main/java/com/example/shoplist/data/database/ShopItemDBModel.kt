@@ -1,4 +1,4 @@
-package com.example.shoplist.data
+package com.example.shoplist.data.database
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

@@ -1,28 +1,25 @@
 package com.example.shoplist.presentation
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.shoplist.data.ShopListRepositoryImpl
-import com.example.shoplist.domain.AddShopItemUseCase
-import com.example.shoplist.domain.EditShopItemUseCase
-import com.example.shoplist.domain.GetShopItemUseCase
+import com.example.shoplist.data.repository.ShopListRepositoryImpl
+import com.example.shoplist.domain.usecases.AddShopItemUseCase
+import com.example.shoplist.domain.usecases.EditShopItemUseCase
+import com.example.shoplist.domain.usecases.GetShopItemUseCase
 import com.example.shoplist.domain.ShopItem
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class ShopItemViewModel(application: Application): AndroidViewModel(application) {
-    private val repository = ShopListRepositoryImpl(application)
+class ShopItemViewModel @Inject constructor(
+    private val addShopItemUseCase: AddShopItemUseCase,
+    private val getShopItemUseCase: GetShopItemUseCase,
+    private val editShopItemUseCase: EditShopItemUseCase
+) : ViewModel() {
 
-    private val addShopItemUseCase = AddShopItemUseCase(repository)
-    private val getShopItemUseCase = GetShopItemUseCase(repository)
-    private val editShopItemUseCase = EditShopItemUseCase(repository)
 
     //Mutable - для работы во ViewModel, а LiveData для Activity,
     //но чтобы нельзя было из Activity менять значения этой переменной
@@ -113,9 +110,10 @@ class ShopItemViewModel(application: Application): AndroidViewModel(application)
         _errorInputCount.value = false
     }
 
-    public fun finishWork(){
+    public fun finishWork() {
         _finishScreen.value = Unit
     }
+
     companion object {
         const val UNDEFINED_COUNT = -1
     }

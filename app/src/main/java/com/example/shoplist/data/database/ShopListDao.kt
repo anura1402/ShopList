@@ -1,10 +1,11 @@
-package com.example.shoplist.data
+package com.example.shoplist.data.database
 
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import com.example.shoplist.data.database.ShopItemDBModel
 
 @Dao
 interface ShopListDao {

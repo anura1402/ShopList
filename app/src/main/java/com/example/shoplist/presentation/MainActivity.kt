@@ -10,21 +10,30 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.example.shoplist.R
+import com.example.shoplist.presentation.adapters.ShopListAdapter
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import javax.inject.Inject
 
 
 class MainActivity : AppCompatActivity(), ShopItemFragment.OnEditingFinishedListener {
 
+    @Inject
+    lateinit var factory: ViewModelProvider.Factory
     private lateinit var viewModel: MainViewModel
     private lateinit var shopListAdapter: ShopListAdapter
     private var shopItemContainer: FragmentContainerView? = null
 
+    private val component by lazy {
+        (application as ShopListApp).component
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
+        component.inject(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         shopItemContainer = findViewById(R.id.shop_item_container)
         setupRecyclerView()
-        viewModel = ViewModelProvider(this)[MainViewModel::class.java]
+        viewModel = ViewModelProvider(this, factory)[MainViewModel::class.java]
         viewModel.shopList.observe(this) {
             // Обновление данных адаптера, когда изменяется список покупок
             shopListAdapter.shopList = it

@@ -15,9 +15,12 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.shoplist.R
 import com.example.shoplist.domain.ShopItem
 import com.google.android.material.textfield.TextInputLayout
+import javax.inject.Inject
 
 class ShopItemFragment: Fragment() {
 
+    @Inject
+    lateinit var factory: ViewModelProvider.Factory
     private lateinit var viewModel: ShopItemViewModel
     private lateinit var onEditingFinishedListener: OnEditingFinishedListener
 
@@ -30,7 +33,12 @@ class ShopItemFragment: Fragment() {
     private var screenMode: String = UNKNOWN_MODE
     private var shopItemId: Int = ShopItem.UNDEFINED_ID
 
+    private val component by lazy {
+        (requireActivity().application as ShopListApp).component
+    }
+
     override fun onAttach(context: Context) {
+        component.inject(this)
         super.onAttach(context)
         if (context is OnEditingFinishedListener){
             onEditingFinishedListener = context
@@ -52,7 +60,7 @@ class ShopItemFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProvider(this)[ShopItemViewModel::class.java]
+        viewModel = ViewModelProvider(this,factory)[ShopItemViewModel::class.java]
         initViews(view)
         addTextChangeListeners()
         launchRightMode()

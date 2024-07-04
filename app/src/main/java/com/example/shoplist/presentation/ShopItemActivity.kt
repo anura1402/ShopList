@@ -20,7 +20,12 @@ import com.google.android.material.textfield.TextInputLayout
 class ShopItemActivity : AppCompatActivity(), ShopItemFragment.OnEditingFinishedListener{
     private var screenMode = UNKNOWN_MODE
     private var shopItemId = ShopItem.UNDEFINED_ID
+
+    private val component by lazy {
+        (application as ShopListApp).component
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
+        component.inject(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_shop_item)
         parseIntent()

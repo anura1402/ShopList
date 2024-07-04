@@ -1,14 +1,19 @@
-package com.example.shoplist.data
+package com.example.shoplist.data.repository
 
 import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
+import com.example.shoplist.data.database.AppDatabase
+import com.example.shoplist.data.database.ShopListDao
+import com.example.shoplist.data.mapper.ShopListMapper
 import com.example.shoplist.domain.ShopItem
 import com.example.shoplist.domain.ShopListRepository
+import javax.inject.Inject
 
-class ShopListRepositoryImpl(application: Application) : ShopListRepository {
-    private val shopListDao = AppDatabase.getInstance(application).shopListDao()
-    private val mapper = ShopListMapper()
+class ShopListRepositoryImpl @Inject constructor(
+    private val shopListDao:ShopListDao,// = AppDatabase.getInstance(application).shopListDao(),
+    private val mapper:ShopListMapper// = ShopListMapper()
+) : ShopListRepository {
 
 
     override suspend fun addItem(shopItem: ShopItem) {
@@ -24,11 +29,12 @@ class ShopListRepositoryImpl(application: Application) : ShopListRepository {
         return mapper.mapDbModelToEntity(dbModel)
     }
 
-        override fun getShopList(): LiveData<List<ShopItem>> = MediatorLiveData<List<ShopItem>>().apply {
-        addSource(shopListDao.getShopList()) {
-            value = mapper.mapListDbModelToListEntity(it)
+    override fun getShopList(): LiveData<List<ShopItem>> =
+        MediatorLiveData<List<ShopItem>>().apply {
+            addSource(shopListDao.getShopList()) {
+                value = mapper.mapListDbModelToListEntity(it)
+            }
         }
-    }
     // второй способ
 //    override fun getShopList(): LiveData<List<ShopItem>> = shopListDao.getShopList().map {
 //        mapper.mapListDbModelToListEntity(it)
