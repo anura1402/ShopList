@@ -1,5 +1,6 @@
 package com.example.shoplist.presentation
 
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -51,6 +52,14 @@ class MainActivity : AppCompatActivity(), ShopItemFragment.OnEditingFinishedList
                 startActivity(intent)
             }
         }
+
+        contentResolver.query(
+            Uri.parse("content://com.example.shoplist/shop_items"),
+            null,
+            null,
+            null,
+            null
+        )
     }
 
     private fun isOnePaneMode(): Boolean {
