@@ -1,6 +1,8 @@
 package com.example.shoplist.presentation
 
+import android.content.ContentValues
 import android.content.Context
+import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -17,7 +19,7 @@ import com.example.shoplist.domain.ShopItem
 import com.google.android.material.textfield.TextInputLayout
 import javax.inject.Inject
 
-class ShopItemFragment: Fragment() {
+class ShopItemFragment : Fragment() {
 
     @Inject
     lateinit var factory: ViewModelProvider.Factory
@@ -40,7 +42,7 @@ class ShopItemFragment: Fragment() {
     override fun onAttach(context: Context) {
         component.inject(this)
         super.onAttach(context)
-        if (context is OnEditingFinishedListener){
+        if (context is OnEditingFinishedListener) {
             onEditingFinishedListener = context
         } else throw RuntimeException("Activity must implement OnEditingFinishedListener")
     }
@@ -60,7 +62,7 @@ class ShopItemFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProvider(this,factory)[ShopItemViewModel::class.java]
+        viewModel = ViewModelProvider(this, factory)[ShopItemViewModel::class.java]
         initViews(view)
         addTextChangeListeners()
         launchRightMode()
@@ -69,7 +71,7 @@ class ShopItemFragment: Fragment() {
     }
 
 
-    interface OnEditingFinishedListener{
+    interface OnEditingFinishedListener {
         fun onEditingFinished()
     }
 
@@ -134,7 +136,17 @@ class ShopItemFragment: Fragment() {
         val name = etName.text
         val count = etCount.text
         buttonSave.setOnClickListener {
-            viewModel.addShopItem(name.toString(), count.toString())
+//            viewModel.addShopItem(name.toString(), count.toString())
+//        }
+            context?.contentResolver?.insert(
+                Uri.parse("content://com.example.shoplist/shop_items"),
+                ContentValues().apply {
+                    put("id", 0)
+                    put("name", name.toString())
+                    put("count", count.toString())
+                    put("enabled", true)
+                }
+            )
         }
     }
 
@@ -196,7 +208,7 @@ class ShopItemFragment: Fragment() {
             return ShopItemFragment().apply {
                 arguments = Bundle().apply {
                     putString(EXTRA_SCREEN_MODE, EDIT_MODE)
-                    putInt(SHOP_ITEM_ID,shopItemId)
+                    putInt(SHOP_ITEM_ID, shopItemId)
                 }
             }
         }
