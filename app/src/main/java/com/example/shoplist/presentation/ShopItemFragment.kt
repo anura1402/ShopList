@@ -159,7 +159,17 @@ class ShopItemFragment : Fragment() {
         buttonSave.setOnClickListener {
             val name = etName.text
             val count = etCount.text
-            viewModel.editShopItem(name.toString(), count.toString())
+            //viewModel.editShopItem(name.toString(), count.toString())
+            context?.contentResolver?.update(
+                Uri.parse("content://com.example.shoplist/shop_items"),
+                ContentValues().apply {
+                    put("name", name.toString())
+                    put("count", count.toString())
+                    put("enabled", true)
+                },
+                null,
+                arrayOf(shopItemId.toString())
+            )
         }
     }
 
