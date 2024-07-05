@@ -1,5 +1,6 @@
 package com.example.shoplist.data.database
 
+import android.database.Cursor
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
@@ -20,4 +21,7 @@ interface ShopListDao {
 
     @Query("SELECT * FROM shop_items")
     fun getShopList(): LiveData<List<ShopItemDBModel>>
+
+    @Query("SELECT * FROM shop_items")
+    fun getShopListCursor(): Cursor
 }
