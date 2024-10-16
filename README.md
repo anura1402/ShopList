@@ -27,7 +27,7 @@
 <img src="https://github.com/user-attachments/assets/ae0689b9-3971-4e91-812e-9bbb56a0a204" width="512">
 
 ### <a name="adding"></a> Добавление нового продукта
-*При нажатии на "+" осуществляется перед на фрагмент добавления товара*
+*При нажатии на "+" осуществляется переход на фрагмент добавления товара*
 
 <img src="https://github.com/user-attachments/assets/f662df29-1efd-4e8f-a188-90a300c2a031" width="512">
 
